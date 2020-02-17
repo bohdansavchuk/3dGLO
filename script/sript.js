@@ -47,6 +47,6 @@ window.addEventListener('DOMContentLoaded', function(){
 
     }
 
-    countTimer('18 february 2020');
+    countTimer('19 february 2020');
 
 });  
