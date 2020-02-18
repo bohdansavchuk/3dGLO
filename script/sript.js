@@ -18,20 +18,16 @@ window.addEventListener('DOMContentLoaded', function(){
 
         function updateClock() {
             let timer = getTimeRemaining();
-            let countInterval;
             
             timerHours.textContent = ("0" + timer.hours).slice(-2);
             timerMinutes.textContent = ("0" + timer.minutes).slice(-2);
             timerSeconds.textContent = ("0" + timer.seconds).slice(-2);
 
-            if(timer.timeRemaining > 0){
-                countInterval = setInterval(updateClock, 1000);
-            } else {
-                clearInterval(countInterval);
+            if(timer.timeRemaining < 0){
                 timerHours.textContent = "00";
                 timerMinutes.textContent = "00";
                 timerSeconds.textContent = "00";
-            }
+            } 
 
             // if(timer.timeRemaining > 0){
             //     setTimeout(updateClock, 1000);
@@ -44,6 +40,8 @@ window.addEventListener('DOMContentLoaded', function(){
         } 
 
         updateClock();
+
+        setInterval(updateClock, 1000);
 
     }
 
