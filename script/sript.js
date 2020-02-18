@@ -2,16 +2,11 @@ window.addEventListener('DOMContentLoaded', function(){
     'use strict';
 
     let date;
-
-    function setDate() {
-        date = new Date();
-
-        date.setDate(date.getDate() +1);
-        date.setHours(0, 0, 0);    
-    }
+    date = new Date();
+    date.setDate(date.getDate() +1);
+    date.setHours(0, 0, 0); 
 
     function countTimer() {
-        setDate();
 
         let timerHours = document.getElementById('timer-hours'),
             timerMinutes = document.getElementById('timer-minutes'),
@@ -34,15 +29,10 @@ window.addEventListener('DOMContentLoaded', function(){
             timerMinutes.textContent = ("0" + timer.minutes).slice(-2);
             timerSeconds.textContent = ("0" + timer.seconds).slice(-2);
 
-            if(timer.timeRemaining < 0){
+            if(timer.timeRemaining < 1){
 
-                timerHours.textContent = "00";
-                timerMinutes.textContent = "00";
-                timerSeconds.textContent = "00";
-
-                setDate();
+                date.setDate(date.getDate() +1);
             } 
-
         } 
 
         updateClock();
