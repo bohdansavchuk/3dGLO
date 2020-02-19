@@ -1,6 +1,8 @@
 window.addEventListener('DOMContentLoaded', function(){
     'use strict';
 
+    //таймер
+    
     let date;
     date = new Date();
     date.setDate(date.getDate() +1);
@@ -42,4 +44,72 @@ window.addEventListener('DOMContentLoaded', function(){
     } 
 
     countTimer();
+
+    //меню
+
+    const toggleMenu = () => {
+
+        const btnMenu = document.querySelector('.menu'),
+            menu = document.querySelector('menu'),
+            closeBtn = document.querySelector('.close-btn'),
+            menuItems = menu.querySelectorAll('ul>li');
+
+        const handlerMenu = () => {
+            menu.classList.toggle('active-menu');
+        };
+
+        btnMenu.addEventListener('click', handlerMenu);   
+
+        closeBtn.addEventListener('click', handlerMenu); 
+
+        menuItems.forEach((elem) => elem.addEventListener('click', handlerMenu));
+
+    };
+
+    toggleMenu();
+
+    // popup
+
+    const togglePopUp = () => { 
+        const popup = document.querySelector('.popup'),
+            popupBtn = document.querySelectorAll('.popup-btn'),
+            popupClose = document.querySelector('.popup-close'),
+            popupContent = document.querySelector('.popup-content');
+
+        let count = 0,
+        animate;
+
+        let popupAnimate = () => {
+            animate = requestAnimationFrame(popupAnimate);
+            if(count < 25) {
+                count++;
+                popupContent.style.top = count * 4 + "px";
+            }else {
+                cancelAnimationFrame(animate);
+            }
+        };
+
+        popupBtn.forEach((elem) => {
+            elem.addEventListener('click', () =>{
+                popup.style.display = 'block';
+                if(window.screen.width > 768) {
+                    animate = requestAnimationFrame(popupAnimate);
+                } else {
+                    cancelAnimationFrame(animate);
+                }
+            });
+            
+        });
+
+        popupClose.addEventListener('click', () => {
+            cancelAnimationFrame(animate);
+            popupContent.style.top = 10 + '%';
+            popup.style.display = 'none';
+            count = 0;
+        });
+        
+    };
+
+    togglePopUp();
+
 });  
