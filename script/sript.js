@@ -115,8 +115,10 @@ window.addEventListener('DOMContentLoaded', function(){
 
     // scroll
 
+   const getScroll = function(){
+
     const menuLinks = document.querySelectorAll('menu > ul > li > a'),
-            mainBtn = document.querySelector('[href="#service-block"]');        
+    mainBtn = document.querySelector('[href="#service-block"]');        
 
     const scroll = (elem) => {
         elem.addEventListener('click', function (event) {
@@ -132,9 +134,13 @@ window.addEventListener('DOMContentLoaded', function(){
     };
 
     menuLinks.forEach((item) => {
-        scroll(item);
+    scroll(item);
     });
 
     scroll(mainBtn);
+
+   };
+
+   getScroll();
 
 });  
