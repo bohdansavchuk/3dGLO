@@ -92,7 +92,7 @@ window.addEventListener('DOMContentLoaded', function(){
         popupBtn.forEach((elem) => {
             elem.addEventListener('click', () =>{
                 popup.style.display = 'block';
-                if(window.screen.width > 768) {
+                if(document.body.clientWidth > 768) {
                     animate = requestAnimationFrame(popupAnimate);
                 } else {
                     cancelAnimationFrame(animate);
