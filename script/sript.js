@@ -54,29 +54,23 @@ window.addEventListener('DOMContentLoaded', function(){
     const toggleMenu = () => {
 
         const menu = document.querySelector('menu'),
-            mainHeader = document.querySelector('.main-header');
+            burger = document.querySelector('.menu'),
+            close = document.querySelector('.close-btn');
 
         const handlerMenu = () => {
             menu.classList.toggle('active-menu');
         };
 
-        mainHeader.addEventListener('click', (event) => {
+        window.addEventListener('click', (event) => { 
             let target = event.target;
-            target = target.closest('.menu');
-    
-            if(target) {
-                handlerMenu();
-            }
-        });   
-
-        menu.addEventListener('click', (event) => {
-           let target = event.target;
-
-           if(target.tagName === 'A') {
-                handlerMenu();
-           } 
-
-        });
+            
+            if (burger.contains(target) 
+                || (target.tagName === 'A' && (target.closest('menu') || close.contains(target)))
+                || (!menu.contains(target) && menu.classList.contains('active-menu'))
+            ) {
+                  handlerMenu();
+            } 
+          });
 
     };
 
