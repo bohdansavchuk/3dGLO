@@ -308,4 +308,33 @@ window.addEventListener('DOMContentLoaded', function(){
 
    slider();
 
+    const togglePhoto = () => {
+        const comandPhoto = document.querySelectorAll('.command__photo');
+
+        comandPhoto.forEach((item) => {
+            let source;
+            item.addEventListener('mouseover', (event) => {
+                source = event.target.src;
+                event.target.src = event.target.dataset.img;
+            });
+            item.addEventListener('mouseout', (event) => {
+                event.target.src = source;
+            });
+        });
+    };
+
+    togglePhoto();
+
+    const inputsNumber = () => {
+        const calcItems = document.querySelectorAll('input.calc-item');
+
+        calcItems.forEach((item) => {
+            item.addEventListener('input', (event) => {
+                item.value.replace(/\D/g, '');
+            });
+        });
+    };
+
+    inputsNumber();
+
 });  
