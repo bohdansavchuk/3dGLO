@@ -330,7 +330,7 @@ window.addEventListener('DOMContentLoaded', function(){
 
         calcItems.forEach((item) => {
             item.addEventListener('input', (event) => {
-                item.value.replace(/\D/g, '');
+                item.value = item.value.replace(/[^0-9]+/g, '');
             });
         });
     };
