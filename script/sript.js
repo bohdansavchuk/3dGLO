@@ -347,9 +347,11 @@ window.addEventListener('DOMContentLoaded', function(){
             calcCount = document.querySelector('.calc-count'),
             totalValue = document.getElementById('total');
 
+        
         const countSum = () => {
             let total = 0,
                 countValue = 1,
+                start = 0,
                 dayValue = 1;
             const typeValue = calcType.options[calcType.selectedIndex].value,
                 squareValue = +calcSquare.value;
@@ -364,11 +366,17 @@ window.addEventListener('DOMContentLoaded', function(){
                 dayValue *= 1.5;
             }
 
+
             if(typeValue && squareValue) {
                 total = price * typeValue * squareValue * countValue * dayValue;
+                let interval = setInterval(() => {
+                    totalValue.textContent = ++start;
+                    if(start === total) {
+                        clearInterval(interval);
+                    }
+                }, 0.0001);
             }
 
-            totalValue.textContent = total;
         };
 
         calcBlock.addEventListener('change', (event) => {
@@ -379,6 +387,7 @@ window.addEventListener('DOMContentLoaded', function(){
             }
 
         });
+
 
     };
 
