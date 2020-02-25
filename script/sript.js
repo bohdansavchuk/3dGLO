@@ -372,10 +372,11 @@ window.addEventListener('DOMContentLoaded', function(){
 
                 let count = 0;
                 let animation;
+                let step = 20;
 
                 const animNumb = () => {
                     animation = requestAnimationFrame(animNumb);
-                    count++;
+                    count += step;
                     totalValue.textContent = count;
                     if(count === total) {
                         cancelAnimationFrame(animation);
