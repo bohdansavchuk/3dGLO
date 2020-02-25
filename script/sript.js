@@ -369,12 +369,20 @@ window.addEventListener('DOMContentLoaded', function(){
 
             if(typeValue && squareValue) {
                 total = price * typeValue * squareValue * countValue * dayValue;
-                let interval = setInterval(() => {
-                    totalValue.textContent = ++start;
-                    if(start === total) {
-                        clearInterval(interval);
+
+                let count = 0;
+                let animation;
+
+                const animNumb = () => {
+                    animation = requestAnimationFrame(animNumb);
+                    count++;
+                    totalValue.textContent = count;
+                    if(count === total) {
+                        cancelAnimationFrame(animation);
                     }
-                }, 0.0001);
+                };
+
+                requestAnimationFrame(animNumb);
             }
 
         };
