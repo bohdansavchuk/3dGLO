@@ -370,20 +370,34 @@ window.addEventListener('DOMContentLoaded', function(){
             if(typeValue && squareValue) {
                 total = price * typeValue * squareValue * countValue * dayValue;
 
-                let count = 0;
-                let animation;
-                let step = 20;
+                const animTotal = () => {
 
-                const animNumb = () => {
-                    animation = requestAnimationFrame(animNumb);
-                    count += step;
-                    totalValue.textContent = count;
-                    if(count === total) {
-                        cancelAnimationFrame(animation);
+                    let value = Math.floor(total - start);
+
+                    if(value > 100000) {
+                        start += 100000;
+                    } else if (value > 10000) {
+                        start += 10000;
+                    } else if (value > 1000) {
+                        start += 1000;
+                    } else if (value > 100) {
+                        start += 100;
+                    } else if (value > 10) {
+                        start += 10;
+                    } else if (value > 0) {
+                        start += 1;
+                    } 
+
+                    totalValue.textContent = start;
+
+                    if(start !== total) {
+                        requestAnimationFrame(animTotal);
+                    } else {
+                        cancelAnimationFrame(animTotal);
                     }
                 };
 
-                requestAnimationFrame(animNumb);
+                requestAnimationFrame(animTotal);   
             }
 
         };
