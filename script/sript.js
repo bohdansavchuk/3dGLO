@@ -1,13 +1,24 @@
 window.addEventListener('DOMContentLoaded', function(){
     'use strict';
 
-    function countTimer(deadline) {
+    let date;
+
+    function setDate() {
+        date = new Date();
+
+        date.setDate(date.getDate() +1);
+        date.setHours(0, 0, 0);    
+    }
+
+    function countTimer() {
+        setDate();
+
         let timerHours = document.getElementById('timer-hours'),
             timerMinutes = document.getElementById('timer-minutes'),
             timerSeconds = document.getElementById('timer-seconds');
 
         function getTimeRemaining(){
-            let dateStop = new Date(deadline).getTime(),
+            let dateStop = date.getTime(),
                 dateNow = new Date().getTime(),
                 timeRemaining = (dateStop - dateNow) / 1000,
                 seconds = Math.floor((timeRemaining % 60)),
@@ -24,18 +35,13 @@ window.addEventListener('DOMContentLoaded', function(){
             timerSeconds.textContent = ("0" + timer.seconds).slice(-2);
 
             if(timer.timeRemaining < 0){
+
                 timerHours.textContent = "00";
                 timerMinutes.textContent = "00";
                 timerSeconds.textContent = "00";
-            } 
 
-            // if(timer.timeRemaining > 0){
-            //     setTimeout(updateClock, 1000);
-            // } else {
-            //     timerHours.textContent = "00";
-            //     timerMinutes.textContent = "00";
-            //     timerSeconds.textContent = "00";
-            // }
+                setDate();
+            } 
 
         } 
 
@@ -43,8 +49,7 @@ window.addEventListener('DOMContentLoaded', function(){
 
         setInterval(updateClock, 1000);
 
-    }
+    } 
 
-    countTimer('19 february 2020');
-
+    countTimer();
 });  
