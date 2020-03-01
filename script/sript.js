@@ -337,74 +337,205 @@ window.addEventListener('DOMContentLoaded', function(){
 
     inputsNumber();
 
-    // calc
+   // calc
 
-    const calc = (price = 100) => {
-        const calcBlock = document.querySelector('.calc-block'),
-            calcType = document.querySelector('.calc-type'),
-            calcSquare = document.querySelector('.calc-square'),
-            calcDay = document.querySelector('.calc-day'),
-            calcCount = document.querySelector('.calc-count'),
-            totalValue = document.getElementById('total');
+   const calc = (price = 100) => {
+    const calcBlock = document.querySelector('.calc-block'),
+        calcType = document.querySelector('.calc-type'),
+        calcSquare = document.querySelector('.calc-square'),
+        calcDay = document.querySelector('.calc-day'),
+        calcCount = document.querySelector('.calc-count'),
+        totalValue = document.getElementById('total');
 
-        
-        const countSum = () => {
-            let total = 0,
-                countValue = 1,
-                start = 0,
-                dayValue = 1;
-            const typeValue = calcType.options[calcType.selectedIndex].value,
-                squareValue = +calcSquare.value;
+    
+    const countSum = () => {
+        let total = 0,
+            countValue = 1,
+            start = 0,
+            dayValue = 1;
+        const typeValue = calcType.options[calcType.selectedIndex].value,
+            squareValue = +calcSquare.value;
 
-            if(calcCount.value > 1) {
-                countValue += (calcCount.value - 1) / 10;
-            }
+        if(calcCount.value > 1) {
+            countValue += (calcCount.value - 1) / 10;
+        }
 
-            if(calcDay.value && calcDay.value < 5) {
-                dayValue *= 2;
-            } else if (calcDay.value && calcDay.value < 10) {
-                dayValue *= 1.5;
-            }
+        if(calcDay.value && calcDay.value < 5) {
+            dayValue *= 2;
+        } else if (calcDay.value && calcDay.value < 10) {
+            dayValue *= 1.5;
+        }
 
 
-            if(typeValue && squareValue) {
-                total = price * typeValue * squareValue * countValue * dayValue;
+        if(typeValue && squareValue) {
+            total = price * typeValue * squareValue * countValue * dayValue;
 
-                // let count = 0;
-                // let animation;
-                // let time;
+            const animTotal = () => {
 
-                // const animNumb = () => {
-                //     animation = requestAnimationFrame(animNumb);
-                //     let now = new Date().getTime(),
-                //         dt = now - (time || now);
-                //         time = now;
-                //     count += dt;
-                //     totalValue.textContent = count;
-                //     console.log(total);
-                //     console.log(count);
-                //     if(count === total) {
-                //         cancelAnimationFrame(animation);
-                //     }
-                // };
+                let value = Math.floor(total - start);
 
-                // requestAnimationFrame(animNumb);
-            }
+                if(value > 100000) {
+                    start += 100000;
+                } else if (value > 10000) {
+                    start += 10000;
+                } else if (value > 1000) {
+                    start += 1000;
+                } else if (value > 100) {
+                    start += 100;
+                } else if (value > 10) {
+                    start += 10;
+                } else if (value > 0) {
+                    start += 1;
+                } 
 
-        };
+                totalValue.textContent = start;
 
-        calcBlock.addEventListener('change', (event) => {
-            const target = event.target;
+                if(start !== total) {
+                    requestAnimationFrame(animTotal);
+                } else {
+                    cancelAnimationFrame(animTotal);
+                }
+            };
 
-            if(target.matches('select') || target.matches('input')) {
-                countSum();
-            }
-
-        });
-
+            requestAnimationFrame(animTotal);   
+        }
 
     };
 
-    calc(100);
+    calcBlock.addEventListener('change', (event) => {
+        const target = event.target;
+
+        if(target.matches('select') || target.matches('input')) {
+            countSum();
+        }
+
+    });
+
+
+};
+
+calc(100);
+
+
+    // send-ajax-form
+
+    const sendForm = () => {
+        const errorMessage = 'Что то пошло не так...',
+            loadMessage = 'Загрузка...',
+            successMesage = 'Спасибо! Мы скоро с вами свяжемся!';
+
+        const form = document.getElementById('form1'),
+            form2 = document.getElementById('form2'),
+            form3 = document.getElementById('form3'),
+            inputsForm = form.querySelectorAll('input'),
+            inputsForm2 = form2.querySelectorAll('input'),
+            inputsForm3 = form3.querySelectorAll('input'),
+            formPhone = document.querySelectorAll('.form-phone'),
+            formName = document.querySelectorAll('[type="text"]'),
+            formMess = document.querySelector('.mess');
+
+        formPhone.forEach((item) => {
+            item.addEventListener('input', () => {
+                item.value = item.value.replace(/[^0-9+]/ig, '');
+            });
+        });
+
+        formName.forEach((item) => {
+            item.addEventListener('input', () => {
+                item.value = item.value.replace(/[^\s/а-я]/, '');
+            });
+        });
+
+        formMess.addEventListener('input', () => {
+            formMess.value = formMess.value.replace(/[^\s/а-я]/, '');
+        });
+
+        const statusMessage = document.createElement('div');
+        statusMessage.style.cssText = 'font-size: 2rem';
+        statusMessage.style.color = 'white';
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            form.appendChild(statusMessage);
+            statusMessage.textContent = loadMessage;
+            const formData = new FormData(form);
+            let body = {};
+            formData.forEach((val, key) => {
+                body[key] = val;
+            });
+            postData(body, () => {
+                statusMessage.textContent = successMesage;
+            }, (error) => {
+                statusMessage.textContent = errorMessage;
+                console.error(error);
+            });
+            inputsForm.forEach((item) => {
+                item.value = '';
+            });
+        });
+
+        form2.addEventListener('submit', (event) => {
+            event.preventDefault();
+            form2.appendChild(statusMessage);
+            statusMessage.textContent = loadMessage;
+            const formData = new FormData(form2);
+            let body = {};
+            formData.forEach((val, key) => {
+                body[key] = val;
+            });
+            postData(body, () => {
+                statusMessage.textContent = successMesage;
+            }, (error) => {
+                statusMessage.textContent = errorMessage;
+                console.error(error);
+            });
+            inputsForm2.forEach((item) => {
+                item.value = '';
+            });
+        });
+
+        form3.addEventListener('submit', (event) => {
+            event.preventDefault();
+            form3.appendChild(statusMessage);
+            statusMessage.textContent = loadMessage;
+            const formData = new FormData(form3);
+            let body = {};
+            formData.forEach((val, key) => {
+                body[key] = val;
+            });
+            postData(body, () => {
+                statusMessage.textContent = successMesage;
+            }, (error) => {
+                statusMessage.textContent = errorMessage;
+                console.error(error);
+            });
+            inputsForm3.forEach((item) => {
+                item.value = '';
+            });
+        });
+
+        const postData = (body, outputData, errorData) => {
+            
+            const request = new XMLHttpRequest();
+            request.addEventListener('readystatechange', ()=> {
+                if(request.readyState !== 4){
+                    return;
+                } 
+                if(request.status === 200) {
+                    outputData();
+                } else {
+                    errorData(request.status);
+                }
+            });
+
+            request.open('POST', 'server.php');
+            request.setRequestHeader('Content-Type', 'application/json');
+
+            request.send(JSON.stringify(body));
+        };
+
+    };
+
+    sendForm();
 
 });  
