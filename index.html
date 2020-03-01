@@ -467,7 +467,7 @@
 	const valid3 = new Validator({
 		selector: '#form3',
 		pattern: {
-			phone: /^\+380\d{2}\d{7}$/
+			phone: /^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$/
 		},
 		method: {
 			'form3-phone': [
