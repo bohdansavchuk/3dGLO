@@ -444,12 +444,12 @@ window.addEventListener('DOMContentLoaded', function(){
 
         formName.forEach((item) => {
             item.addEventListener('input', () => {
-                item.value = item.value.replace(/[^\s/а-я]/, '');
+                item.value = item.value.replace(/[^\s/а-яА-Яa]/, '');
             });
         });
 
         formMess.addEventListener('input', () => {
-            formMess.value = formMess.value.replace(/[^\s/а-я]/, '');
+            formMess.value = formMess.value.replace(/[^\s/а-яА-Яa]/, '');
         });
 
         const statusMessage = document.createElement('img');
@@ -472,16 +472,18 @@ window.addEventListener('DOMContentLoaded', function(){
             formData.forEach((val, key) => {
                 body[key] = val;
             });
-            postData(body, () => {
-                cancelAnimationFrame(spinInterval);
-                statusMessage.style.transform = 'unset';
-                statusMessage.src = successMesage;
-            }, (error) => {
-                cancelAnimationFrame(spinInterval);
-                statusMessage.style.transform = 'unset';
-                statusMessage.src = errorMessage;
-                console.error(error);
-            });
+            postData(body)
+                .then(() => {
+                    cancelAnimationFrame(spinInterval);
+                    statusMessage.style.transform = 'unset';
+                    statusMessage.src = successMesage;
+                })
+                .catch((error) => {
+                    cancelAnimationFrame(spinInterval);
+                    statusMessage.style.transform = 'unset';
+                    statusMessage.src = errorMessage;
+                    console.error(error);
+                });
             inputsForm.forEach((item) => {
                 item.value = '';
             });
@@ -497,16 +499,18 @@ window.addEventListener('DOMContentLoaded', function(){
             formData.forEach((val, key) => {
                 body[key] = val;
             });
-            postData(body, () => {
-                cancelAnimationFrame(spinInterval);
-                statusMessage.style.transform = 'unset';
-                statusMessage.src = successMesage;
-            }, (error) => {
-                cancelAnimationFrame(spinInterval);
-                statusMessage.style.transform = 'unset';
-                statusMessage.src = errorMessage;
-                console.error(error);
-            });
+            postData(body)
+                .then(() => {
+                    cancelAnimationFrame(spinInterval);
+                    statusMessage.style.transform = 'unset';
+                    statusMessage.src = successMesage;
+                })
+                .catch((error) => {
+                    cancelAnimationFrame(spinInterval);
+                    statusMessage.style.transform = 'unset';
+                    statusMessage.src = errorMessage;
+                    console.error(error);
+                });
             inputsForm2.forEach((item) => {
                 item.value = '';
             });
@@ -522,39 +526,45 @@ window.addEventListener('DOMContentLoaded', function(){
             formData.forEach((val, key) => {
                 body[key] = val;
             });
-            postData(body, () => {
-                cancelAnimationFrame(spinInterval);
-                statusMessage.style.transform = 'unset';
-                statusMessage.src = successMesage;
-            }, (error) => {
-                cancelAnimationFrame(spinInterval);
-                statusMessage.style.transform = 'unset';
-                statusMessage.src = errorMessage;
-                console.error(error);
-            });
+            postData(body)
+                .then(() => {
+                    cancelAnimationFrame(spinInterval);
+                    statusMessage.style.transform = 'unset';
+                    statusMessage.src = successMesage;
+                })
+                .catch((error) => {
+                    cancelAnimationFrame(spinInterval);
+                    statusMessage.style.transform = 'unset';
+                    statusMessage.src = errorMessage;
+                    console.error(error);
+                });
+                     
             inputsForm3.forEach((item) => {
                 item.value = '';
             });
         });
 
-        const postData = (body, outputData, errorData) => {
+        const postData = (body) => {
             
-            const request = new XMLHttpRequest();
-            request.addEventListener('readystatechange', ()=> {
-                if(request.readyState !== 4){
-                    return;
-                } 
-                if(request.status === 200) {
-                    outputData();
-                } else {
-                    errorData(request.status);
-                }
+            return new Promise((resolve, reject) => {
+                const request = new XMLHttpRequest();
+                request.addEventListener('readystatechange', ()=> {
+                    if(request.readyState !== 4){
+                        return;
+                    } 
+                    if(request.status === 200) {
+                        resolve();
+                    } else {
+                        reject(request.status);
+                    }
+                });
+    
+                request.open('POST', 'server.php');
+                request.setRequestHeader('Content-Type', 'application/json');
+    
+                request.send(JSON.stringify(body));
             });
 
-            request.open('POST', 'server.php');
-            request.setRequestHeader('Content-Type', 'application/json');
-
-            request.send(JSON.stringify(body));
         };
 
     };
