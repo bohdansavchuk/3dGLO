@@ -423,12 +423,7 @@ window.addEventListener('DOMContentLoaded', function(){
             loadMessage = 'images/yin-yang.svg',
             successMesage = 'images/check.svg';
 
-        const form = document.getElementById('form1'),
-            form2 = document.getElementById('form2'),
-            form3 = document.getElementById('form3'),
-            inputsForm = form.querySelectorAll('input'),
-            inputsForm2 = form2.querySelectorAll('input'),
-            inputsForm3 = form3.querySelectorAll('input'),
+        const form = document.querySelectorAll('form'),
             formPhone = document.querySelectorAll('.form-phone'),
             formName = document.querySelectorAll('[type="text"]'),
             formMess = document.querySelector('.mess');
@@ -462,111 +457,49 @@ window.addEventListener('DOMContentLoaded', function(){
             }
         };
 
-        form.addEventListener('submit', (event) => {
-            event.preventDefault();
-            form.appendChild(statusMessage);
-            statusMessage.src = loadMessage;
-            spinInterval = requestAnimationFrame(spin);
-            const formData = new FormData(form);
-            let body = {};
-            formData.forEach((val, key) => {
-                body[key] = val;
-            });
-            postData(body)
-                .then(() => {
-                    cancelAnimationFrame(spinInterval);
-                    statusMessage.style.transform = 'unset';
-                    statusMessage.src = successMesage;
-                })
-                .catch((error) => {
-                    cancelAnimationFrame(spinInterval);
-                    statusMessage.style.transform = 'unset';
-                    statusMessage.src = errorMessage;
-                    console.error(error);
+        form.forEach((item) => {
+            item.addEventListener('submit', (event) => {
+                event.preventDefault();
+                item.appendChild(statusMessage);
+                statusMessage.src = loadMessage;
+                spinInterval = requestAnimationFrame(spin);
+                const formData = new FormData(item);
+                let body = {};
+                formData.forEach((val, key) => {
+                    body[key] = val;
                 });
-            inputsForm.forEach((item) => {
-                item.value = '';
-            });
-        });
-
-        form2.addEventListener('submit', (event) => {
-            event.preventDefault();
-            form2.appendChild(statusMessage);
-            statusMessage.src = loadMessage;
-            spinInterval = requestAnimationFrame(spin);
-            const formData = new FormData(form2);
-            let body = {};
-            formData.forEach((val, key) => {
-                body[key] = val;
-            });
-            postData(body)
-                .then(() => {
-                    cancelAnimationFrame(spinInterval);
-                    statusMessage.style.transform = 'unset';
-                    statusMessage.src = successMesage;
-                })
-                .catch((error) => {
-                    cancelAnimationFrame(spinInterval);
-                    statusMessage.style.transform = 'unset';
-                    statusMessage.src = errorMessage;
-                    console.error(error);
+                postData(body)
+                    .then((response) => {
+                        if (response.status !== 200) {
+                            throw new Error('status network not 200');
+                        }
+                        cancelAnimationFrame(spinInterval);
+                        statusMessage.style.transform = 'unset';
+                        statusMessage.src = successMesage;
+                    })
+                    .catch((error) => {
+                        cancelAnimationFrame(spinInterval);
+                        statusMessage.style.transform = 'unset';
+                        statusMessage.src = errorMessage;
+                        console.error(error);
+                    });
+                let inputs = item.querySelectorAll('input');
+                inputs.forEach((item) => {
+                    item.value = '';
                 });
-            inputsForm2.forEach((item) => {
-                item.value = '';
-            });
-        });
-
-        form3.addEventListener('submit', (event) => {
-            event.preventDefault();
-            form3.appendChild(statusMessage);
-            statusMessage.src = loadMessage;
-            spinInterval = requestAnimationFrame(spin);
-            const formData = new FormData(form3);
-            let body = {};
-            formData.forEach((val, key) => {
-                body[key] = val;
-            });
-            postData(body)
-                .then(() => {
-                    cancelAnimationFrame(spinInterval);
-                    statusMessage.style.transform = 'unset';
-                    statusMessage.src = successMesage;
-                })
-                .catch((error) => {
-                    cancelAnimationFrame(spinInterval);
-                    statusMessage.style.transform = 'unset';
-                    statusMessage.src = errorMessage;
-                    console.error(error);
-                });
-                     
-            inputsForm3.forEach((item) => {
-                item.value = '';
             });
         });
 
         const postData = (body) => {
-            
-            return new Promise((resolve, reject) => {
-                const request = new XMLHttpRequest();
-                request.addEventListener('readystatechange', ()=> {
-                    if(request.readyState !== 4){
-                        return;
-                    } 
-                    if(request.status === 200) {
-                        resolve();
-                    } else {
-                        reject(request.status);
-                    }
-                });
-    
-                request.open('POST', 'server.php');
-                request.setRequestHeader('Content-Type', 'application/json');
-    
-                request.send(JSON.stringify(body));
+
+            return fetch('server.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
             });
-
         };
-
     };
 
     sendForm();
