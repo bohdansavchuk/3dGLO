@@ -62,6 +62,14 @@ const sendForm = () => {
                     inputs.forEach((item) => {
                         item.value = '';
                     });
+                    let inStart = () =>{
+                        statusMessage.remove();
+                        inputs.forEach((item) => {
+                            item.classList.remove('success');
+                        });
+                    };
+
+                    setTimeout(inStart, 5000);
                 })
                 .catch((error) => {
                     cancelAnimationFrame(spinInterval);
