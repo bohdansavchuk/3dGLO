@@ -1,3 +1,5 @@
+'use strict';
+
 const calc = (price = 100) => {
     const calcBlock = document.querySelector('.calc-block'),
         calcType = document.querySelector('.calc-type'),
@@ -24,7 +26,6 @@ const calc = (price = 100) => {
         } else if (calcDay.value && calcDay.value < 10) {
             dayValue *= 1.5;
         }
-
 
         if(typeValue && squareValue) {
             total = price * typeValue * squareValue * countValue * dayValue;
@@ -70,6 +71,13 @@ const calc = (price = 100) => {
 
     });
 
+    calcSquare.addEventListener('change', (event) => {
+        const target = event.target;
+
+        if(target.value === '') {
+            totalValue.textContent = 0;
+        }
+    });
 
 };
 

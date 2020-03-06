@@ -1,3 +1,5 @@
+'use strict';
+
 const getScroll =() => {
 
     const menuLinks = document.querySelectorAll('menu > ul > li > a'),

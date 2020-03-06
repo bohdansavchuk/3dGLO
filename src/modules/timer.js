@@ -1,3 +1,5 @@
+'use strict';
+
 const getTimer = () => {
     let date;
     date = new Date();

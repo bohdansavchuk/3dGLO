@@ -1,3 +1,5 @@
+'use strict'; 
+
 const sendForm = () => {
     const errorMessage = 'images/times.svg',
         loadMessage = 'images/yin-yang.svg',
@@ -24,7 +26,7 @@ const sendForm = () => {
     });
 
     formMess.addEventListener('input', () => {
-        formMess.value = formMess.value.replace(/[^\s/а-яА-Яa]/, '');
+        formMess.value = formMess.value.replace(/[^\s/?!,.а-яА-Яa]/, '');
     });
 
     const statusMessage = document.createElement('img');
@@ -56,6 +58,10 @@ const sendForm = () => {
                     cancelAnimationFrame(spinInterval);
                     statusMessage.style.transform = 'unset';
                     statusMessage.src = successMesage;
+                    let inputs = item.querySelectorAll('input');
+                    inputs.forEach((item) => {
+                        item.value = '';
+                    });
                 })
                 .catch((error) => {
                     cancelAnimationFrame(spinInterval);
@@ -63,10 +69,6 @@ const sendForm = () => {
                     statusMessage.src = errorMessage;
                     console.error(error);
                 });
-            let inputs = item.querySelectorAll('input');
-            inputs.forEach((item) => {
-                item.value = '';
-            });
         });
     });
 

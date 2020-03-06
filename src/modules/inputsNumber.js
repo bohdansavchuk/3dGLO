@@ -1,3 +1,5 @@
+'use strict';
+
 const inputsNumber = () => {
     const calcItems = document.querySelectorAll('input.calc-item');
 

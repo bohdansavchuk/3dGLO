@@ -1,3 +1,5 @@
+'use strict';
+
 const togglePhoto = () => {
     const comandPhoto = document.querySelectorAll('.command__photo');
 
