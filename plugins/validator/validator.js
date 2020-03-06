@@ -17,10 +17,10 @@ class Validator {
             this.elementsForm.forEach(elem => this.chekIt({target: elem}));
             if (this.error.size) {
                 e.preventDefault();
+                e.stopImmediatePropagation();
             }
         });
     }
-
 
     isValid(elem){
 
