@@ -12,7 +12,6 @@ const calc = (price = 100) => {
     const countSum = () => {
         let total = 0,
             countValue = 1,
-            start = 0,
             dayValue = 1;
         const typeValue = calcType.options[calcType.selectedIndex].value,
             squareValue = +calcSquare.value;
@@ -28,37 +27,41 @@ const calc = (price = 100) => {
         }
 
         if(typeValue && squareValue) {
-            total = price * typeValue * squareValue * countValue * dayValue;
+            total = price * typeValue * squareValue * countValue * dayValue; 
+        }
 
-            const animTotal = () => {
+        // функция - оболочка анимации
+        const animateCalc = ({linear, draw, duration}) => {
+            let aniInterval;
+            let start = performance.now();
 
-                let value = Math.floor(total - start);
+            const animateBlock = (time) => {
+                aniInterval = requestAnimationFrame(animateBlock);
+                let timeFraction = (time - start) / duration;
+                if (timeFraction > 1) {timeFraction = 1;}
 
-                if(value > 100000) {
-                    start += 100000;
-                } else if (value > 10000) {
-                    start += 10000;
-                } else if (value > 1000) {
-                    start += 1000;
-                } else if (value > 100) {
-                    start += 100;
-                } else if (value > 10) {
-                    start += 10;
-                } else if (value > 0) {
-                    start += 1;
-                } 
+                // вычисление текущего состояния анимации
+                let progress = linear(timeFraction);
 
-                totalValue.textContent = start;
-
-                if(start !== total) {
-                    requestAnimationFrame(animTotal);
-                } else {
-                    cancelAnimationFrame(animTotal);
+                draw(progress); // отрисовать её
+                if (timeFraction >= 1){
+                    cancelAnimationFrame(aniInterval);
                 }
             };
+            requestAnimationFrame(animateBlock);
+        };
 
-            requestAnimationFrame(animTotal);   
-        }
+        animateCalc({
+            // скорость анимации
+            duration: 1000,
+            // функция расчёта времени
+            linear(timeFraction) {
+                return timeFraction;
+            },
+            draw(progress) {
+                totalValue.textContent = Math.floor(progress * total);
+            }
+        });
 
     };
 
