@@ -112,7 +112,7 @@ class Validator {
         }
 
         if(!this.pattern.email) {
-            this.pattern.email = /^\w+@\w+\.\w{2,}$/;
+            this.pattern.email = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
         }
 
         if(!this.pattern.text) {
