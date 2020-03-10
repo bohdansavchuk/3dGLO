@@ -411,6 +411,7 @@
 </div>
 
 <script src="plugins/validator/validator.js"></script>
+<script src="plugins/sliderCarousel.js"></script>
 <script>
 	const valid = new Validator({
 		selector: '#form1',
@@ -484,8 +485,29 @@
 	}); 
 
 	valid3.init();
+
+	const carousel = new SliderCarousel({
+		main: '.companies-wrapper',
+		wrap: '.companies-hor',
+		slidesToShow: 4,
+		infinity: true,
+		responsive: [{
+			breakpoint: 1024,
+			slideToShow: 3
+		},
+		{
+			breakpoint: 768,
+			slideToShow: 2
+		},
+		{
+			breakpoint: 576,
+			slideToShow: 1
+		}
+		]
+	});
+
+	carousel.init();
 </script>
 <script src="./dist/main.js"></script>
-
 </body>
 </html>
